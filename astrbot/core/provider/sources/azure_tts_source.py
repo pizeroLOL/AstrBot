@@ -59,7 +59,7 @@ class ProviderAzureTTS(TTSProvider):
         result = (
             config_set.speak_text_async(text)
             if self.ssml is None
-            else config_set.speak_ssml_async(__replace_slot(self.ssml, text))
+            else config_set.speak_ssml_async(self.__replace_slot(self.ssml, text))
         )
         result = future.get()
         has_file = file.is_file()
