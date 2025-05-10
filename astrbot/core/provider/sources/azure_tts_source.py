@@ -42,7 +42,7 @@ class ProviderAzureTTS(TTSProvider):
         region = provider_config.get("azure_tts_region", "")
         subscription = provider_config.get("azure_tts_subscription_key", "")
         self.config = SpeechConfig(
-            region=self.__empty_str_to_none(region), subscription=self.__empty_str_to_none(subscription)
+            endpoint=f"https://{region if self.__empty_str_to_none(region)else 'eastasia'}.api.cognitive.microsoft.com", subscription=self.__empty_str_to_none(subscription)
         )
         ssml = self.__empty_str_to_none(provider_config.get("azure_tts_ssml", ""))
         self.ssml = ssml if ssml is None else Et.fromstring(ssml)
