@@ -30,12 +30,12 @@ class ProviderAzureTTS(TTSProvider):
         return s if s != "" else None
 
     @staticmethod
-    def __replace_slot(el: Et.XML, text: str) -> str:
+    def __replace_slot(root: Et.Element, text: str) -> str:
         for slot in root.findall("slot"):
             parent = slot.getparent() if hasattr(slot, "getparent") else root
             parent.remove(slot)
-            parent.append(ET.Element("text", text=text))
-        return ET.tostring(root, encoding="unicode")
+            parent.text = text
+        return Et.tostring(root, encoding="unicode")
 
     def __init__(self, provider_config: dict, provider_settings: dict):
         super().__init__(provider_config, provider_settings)
