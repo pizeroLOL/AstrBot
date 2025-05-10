@@ -22,7 +22,7 @@ DEFAULT_SSML = """
 
 @register_provider_adapter("azure_tts", "Azure TTS", ProviderType.TEXT_TO_SPEECH)
 class ProviderAzureTTS(TTSProvider):
-    ssml: Et.Element
+    ssml: str
     endpoint: str
     subscription: str
 
@@ -31,12 +31,17 @@ class ProviderAzureTTS(TTSProvider):
         return s if s != "" else None
 
     @staticmethod
-    def __replace_slot(root: Et.Element, text: str) -> str:
-        for slot in root.findall("slot"):
-            parent = slot.getparent() if hasattr(slot, "getparent") else root
-            parent.remove(slot)
-            parent.text = text
-        return Et.tostring(root, encoding="unicode")
+    def __replace_slot(root: str, text: str) -> str:
+        def replace_node(tree: Et.Element, text: str) -> None:
+            for el in list(tree):
+                if el.tag != "slot":
+                    replace_node(el, text)
+                    continue
+                tree.remove(el)
+                tree.text = text
+        root_tree = Et.fromstring(root)
+        replace_node(root_tree, text)
+        return Et.tostring(root_tree, encoding="unicode")
 
     def __init__(self, provider_config: dict, provider_settings: dict):
         super().__init__(provider_config, provider_settings)
@@ -48,7 +53,7 @@ class ProviderAzureTTS(TTSProvider):
         region_str = region if region is not None else 'eastasia'
         self.endpoint = f"https://{region_str}.tts.speech.microsoft.com/cognitiveservices/v1"
         ssml = self.__empty_str_to_none(provider_config.get("azure_tts_ssml", ""))
-        self.ssml = Et.fromstring(ssml if ssml is not None else DEFAULT_SSML)
+        self.ssml = ssml if ssml is not None else DEFAULT_SSML
         self.set_model("azure_tts")
 
     async def get_audio(self, text: str) -> str:
@@ -61,7 +66,7 @@ class ProviderAzureTTS(TTSProvider):
             "X-Microsoft-OutputFormat": "raw-48khz-16bit-mono-pcm"
         }
         async with AsyncClient() as client:
-            rsp = await client.post(self.endpoint, content=self.__replace_slot(self.ssml.__copy__() ,text),headers=headers)
+            rsp = await client.post(self.endpoint, content=self.__replace_slot(self.ssml ,text),headers=headers)
             if rsp.status_code != 200:
                 raise RuntimeError(f"azure tts 状态码错误，{rsp.status_code}：{rsp.text}")
             with file.open("wb") as o:
