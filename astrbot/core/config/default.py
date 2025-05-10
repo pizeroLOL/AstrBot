@@ -752,16 +752,40 @@ CONFIG_METADATA_2 = {
                         "id": "azure_tts",
                         "type": "azure_tts",
                         "enable": False,
-                        "azure_tts_ssml": "",
+                        "azure_tts_voice": "zh-CN-YunxiaNeural",
+                        "azure_tts_style": "cheerful",
+                        "azure_tts_role": "Boy",
+                        "azure_tts_rate": "1",
+                        "azure_tts_volume": "100",
                         "azure_tts_subscription_key": "",
-                        "azure_tts_region": "eastasia"
+                        "azure_tts_region": "eastus"
                     }
                 },
                 "items": {
-                    "azure_tts_ssml": {
+                    "azure_tts_voice": {
                         "type": "string",
-                        "description": "SSML 配置文件",
-                        "hint": "SSML 配置文件内容，具体参考 https://learn.microsoft.com/zh-cn/azure/ai-services/speech-service/speech-synthesis-markup，会将 <slot /> 标签替换为文字，置空则忽略"
+                        "description": "音色设置",
+                        "hint": ""
+                    },
+                    "azure_tts_style": {
+                        "type": "string",
+                        "description": "风格设置",
+                        "hint": ""
+                    },
+                    "azure_tts_role": {
+                        "type": "string",
+                        "description": "模仿设置",
+                        "hint": ""
+                    },
+                    "azure_tts_rate": {
+                        "type": "string",
+                        "description": "语速设置",
+                        "hint": ""
+                    },
+                    "azure_tts_volume": {
+                        "type": "string",
+                        "description": "音量设置",
+                        "hint": ""
                     },
                     "azure_tts_region": {
                         "type": "string",
@@ -772,7 +796,7 @@ CONFIG_METADATA_2 = {
                     "azure_tts_subscription_key": {
                         "type": "string",
                         "description": "订阅密钥",
-                        "hint": "Azure_TTS 的订阅密钥，详见 https://learn.microsoft.com/zh-cn/azure/ai-services/speech-service/get-started-speech-to-text?tabs=linux%2Cterminal&pivots=programming-language-python"
+                        "hint": "Azure_TTS 的订阅密钥"
                     },
                     "dashscope_tts_voice": {
                         "description": "语音合成模型",
