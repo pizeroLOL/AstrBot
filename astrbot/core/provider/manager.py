@@ -204,7 +204,7 @@ class ProviderManager:
                     )
                 case "azure_tts":
                     from .sources.azure_tts_source import (
-                        AzureTTSWrapper as AzureTTSWrapper,
+                        AzureTTSProvider as AzureTTSProvider,
                     )
         except (ImportError, ModuleNotFoundError) as e:
             logger.critical(
