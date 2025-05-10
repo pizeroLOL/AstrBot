@@ -60,8 +60,7 @@ class ProviderAzureTTS(TTSProvider):
             config_set.speak_text_async(text)
             if self.ssml is None
             else config_set.speak_ssml_async(self.__replace_slot(self.ssml, text))
-        )
-        result = future.get()
+        ).get()
         has_file = file.is_file()
         if result.reason == ResultReason.SynthesizingAudioCompleted and has_file:
             return file_text
