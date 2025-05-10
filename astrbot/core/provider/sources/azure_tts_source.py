@@ -46,7 +46,7 @@ class ProviderAzureTTS(TTSProvider):
             raise ValueError("subscription 不可为空")
         self.subscription = subscription
         region_str = region if region is None else 'eastasia'
-        self.endpoint = f"https://{region_str}.api.cognitive.microsoft.com/cognitiveservices/v1"
+        self.endpoint = f"https://{region_str}.tts.speech.microsoft.com/cognitiveservices/v1"
         ssml = self.__empty_str_to_none(provider_config.get("azure_tts_ssml", ""))
         self.ssml = Et.fromstring(ssml if ssml is not None else DEFAULT_SSML)
         self.set_model("azure_tts")
